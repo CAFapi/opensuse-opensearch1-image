@@ -99,12 +99,12 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-core</artifactId>
                 </exclusion>
-				<!-- version clashes with analysis-icu plugin -->
-				<exclusion>
+                <!-- version clashes with analysis-icu plugin -->
+                <exclusion>
                     <groupId>org.apache.commons</groupId>
                     <artifactId>commons-lang3</artifactId>
                 </exclusion>
-				<exclusion>
+                <exclusion>
                     <groupId>org.apache.commons</groupId>
                     <artifactId>commons-text</artifactId>
                 </exclusion>
