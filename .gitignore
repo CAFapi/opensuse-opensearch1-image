@@ -1,0 +1,12 @@
+*~
+\#*
+*.swp
+*.log
+
+# Eclipse
+.settings/
+.settings
+.project
+.classpath
+bin
+target/
