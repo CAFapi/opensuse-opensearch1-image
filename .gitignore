@@ -31,3 +31,4 @@ atlassian-ide-plugin.xml
 # Test
 test/**/drivers/*
 test/**/reports/*
+/target/
