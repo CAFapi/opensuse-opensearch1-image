@@ -72,6 +72,12 @@ EXPOSE 9200 9300
 # Run as non-root user
 ENV RUNAS_USER=1000
 
-HEALTHCHECK CMD curl --insecure --fail https://0.0.0.0:9200 -u 'admin:admin' || exit 1
+# Security on
+# ENV DISABLE_SECURITY_PLUGIN=true
+# HEALTHCHECK --interval=1m --start-period=5m CMD curl -k -u "admin:admin" https://0.0.0.0:9200 || exit 1
+
+# Security off
+ENV DISABLE_SECURITY_PLUGIN=true
+HEALTHCHECK --interval=1m --start-period=5m CMD curl http://0.0.0.0:9200 || exit 1
 
 CMD /opt/opensearch/scripts/start.sh
