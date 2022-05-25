@@ -16,4 +16,4 @@
 #
 
 export JAVA_HOME=$JRE_HOME
-exec /usr/local/bin/opensearch-docker-entrypoint.sh "opensearch"
+exec /usr/share/opensearch/opensearch-docker-entrypoint.sh "opensearch"
