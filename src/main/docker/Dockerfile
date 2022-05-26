@@ -46,7 +46,7 @@ RUN groupadd -g 1000 opensearch && \
 
 WORKDIR /usr/share/opensearch
 
-COPY --from=os1-image --chown=1000:0 /usr/share/opensearch/ /usr/share/opensearch/
+COPY --from=os1-image --chown=1000:0 -R /usr/share/opensearch/ /usr/share/opensearch/
 
 # Configure logging
 COPY log4j2.properties /usr/share/opensearch/config
