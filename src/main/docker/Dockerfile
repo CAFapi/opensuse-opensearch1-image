@@ -46,7 +46,7 @@ RUN groupadd -g 1000 opensearch && \
 
 WORKDIR /usr/share/opensearch
 
-COPY --from=os1-image --chown=1000:0 -R /usr/share/opensearch/ /usr/share/opensearch/
+COPY --from=os1-image --chown=1000:0 /usr/share/opensearch/ /usr/share/opensearch/
 
 # Configure logging
 COPY log4j2.properties /usr/share/opensearch/config
@@ -63,10 +63,7 @@ RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
     chmod g=u /etc/passwd && \
     chmod 0775 /usr/share/opensearch/opensearch-docker-entrypoint.sh
 
-RUN chgrp 0 -R /usr/share/opensearch/config && \
-    chgrp 0 -R /usr/share/opensearch/logs && \
-    chmod 0775 -R /usr/share/opensearch/config && \
-    chmod 0775 -R /usr/share/opensearch/logs
+RUN chgrp 0 -R /usr/share/opensearch
 
 COPY scripts/ /opt/opensearch/scripts/
 RUN chmod +x /opt/opensearch/scripts/*
