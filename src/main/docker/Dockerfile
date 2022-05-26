@@ -63,6 +63,11 @@ RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
     chmod g=u /etc/passwd && \
     chmod 0775 /usr/share/opensearch/opensearch-docker-entrypoint.sh
 
+RUN chgrp 0 -R /usr/share/opensearch/config && \
+    chgrp 0 -R /usr/share/opensearch/logs && \
+    chmod 0775 -R /usr/share/opensearch/config && \
+    chmod 0775 -R /usr/share/opensearch/logs
+
 COPY scripts/ /opt/opensearch/scripts/
 RUN chmod +x /opt/opensearch/scripts/*
 
