@@ -15,5 +15,6 @@
 # limitations under the License.
 #
 
+export OPENSEARCH_JAVA_HOME=$JRE_HOME
 export JAVA_HOME=$JRE_HOME
 exec /usr/share/opensearch/opensearch-docker-entrypoint.sh "opensearch"
