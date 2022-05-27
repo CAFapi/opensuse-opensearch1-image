@@ -243,7 +243,7 @@
                     <environmentVariables>
                         <OPENSEARCH_HOST>${docker.host.address}</OPENSEARCH_HOST>
                         <OPENSEARCH_PORT>${os.http.port}</OPENSEARCH_PORT>
-                        <OPENSEARCH_SCHEME>http</OPENSEARCH_SCHEME>
+                        <OPENSEARCH_SCHEME>https</OPENSEARCH_SCHEME>
                     </environmentVariables>
                 </configuration>
             </plugin>
