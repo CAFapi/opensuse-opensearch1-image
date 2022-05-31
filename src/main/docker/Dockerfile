@@ -61,8 +61,7 @@ ENV PATH=/usr/share/opensearch/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr
 COPY --from=os1-image --chown=1000:0 /usr/share/opensearch/opensearch-docker-entrypoint.sh /usr/share/opensearch/opensearch-docker-entrypoint.sh
 RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
     chmod g=u /etc/passwd && \
-    chmod 0775 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
-    chown -R opensearch:opensearch /usr/share/opensearch
+    chmod 0775 /usr/share/opensearch/opensearch-docker-entrypoint.sh
 
 COPY scripts/ /opt/opensearch/scripts/
 RUN chmod +x /opt/opensearch/scripts/*
