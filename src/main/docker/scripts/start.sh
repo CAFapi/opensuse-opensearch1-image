@@ -16,4 +16,4 @@
 #
 
 export JAVA_HOME=$JRE_HOME
-exec /usr/share/opensearch/opensearch-docker-entrypoint.sh "opensearch"
+exec chroot --userspec=1000 / /usr/share/opensearch/opensearch-docker-entrypoint.sh "opensearch"
