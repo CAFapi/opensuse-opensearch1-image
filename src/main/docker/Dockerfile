@@ -59,13 +59,9 @@ RUN JAVA_HOME=${JRE_HOME} OPENSEARCH_JAVA_OPTS="$(echo ${https_proxy} | sed -E '
 ENV PATH=/usr/share/opensearch/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 COPY --from=os1-image --chown=1000:0 /usr/share/opensearch/opensearch-docker-entrypoint.sh /usr/share/opensearch/opensearch-docker-entrypoint.sh
-RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
+RUN chown -R opensearch:opensearch /usr/share/opensearch && \
     chmod g=u /etc/passwd && \
     chmod 0775 /usr/share/opensearch/opensearch-docker-entrypoint.sh
-
-RUN chgrp 0 -R /usr/share/opensearch && \
-    chmod 0775 -R /usr/share/opensearch/config && \
-    chmod 0775 -R /usr/share/opensearch/logs
 
 COPY scripts/ /opt/opensearch/scripts/
 RUN chmod +x /opt/opensearch/scripts/*
