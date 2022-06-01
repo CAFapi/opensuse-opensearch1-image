@@ -14,8 +14,8 @@ It can be used as a base image for any projects that use OpenSearch.
 
 Send requests to the server to verify that OpenSearch is up and running:
 
-`curl -XGET --insecure -u 'admin:admin' https://localhost:9200`
-`curl -XGET --insecure -u 'admin:admin' https://localhost:9200/_cat/nodes?v`
+`curl -XGET --insecure -u 'admin:admin' https://localhost:9200`  
+`curl -XGET --insecure -u 'admin:admin' https://localhost:9200/_cat/nodes?v`  
 `curl -XGET --insecure -u 'admin:admin' https://localhost:9200/_cat/plugins?v`
 
 ### Bash access to container
