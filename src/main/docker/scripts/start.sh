@@ -16,6 +16,5 @@
 #
 
 export JAVA_HOME=$JRE_HOME
-log "Updating OpenSearch file ownership..."
 chown -R opensearch:opensearch /usr/share/opensearch
 exec chroot --userspec=1000 / /usr/share/opensearch/opensearch-docker-entrypoint.sh "opensearch"
