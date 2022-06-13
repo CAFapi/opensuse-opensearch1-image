@@ -52,17 +52,20 @@ import org.opensearch.client.opensearch.indices.CreateIndexResponse;
 import org.opensearch.client.opensearch.indices.IndexSettings;
 import org.opensearch.client.transport.OpenSearchTransport;
 import org.opensearch.client.transport.rest_client.RestClientTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class ContainerIT {
 
     private static final int CONNECT_TIMEOUT = 60000;
     private static final int SOCKET_TIMEOUT = 60000;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContainerIT.class);
 
     @Rule
     public TestRule watcher = new TestWatcher() {
         @Override
         protected void starting(final Description description) {
-            System.out.println("Running test: " + description.getMethodName());
+            LOGGER.info("Running test: {}", description.getMethodName());
         }
     };
 
@@ -71,12 +74,10 @@ public final class ContainerIT {
         try (final RestClient restClient = getOpenSearchRestClient();
             final OpenSearchTransport transport = getOpenSearchTransport(restClient);) {
             final OpenSearchClient client = new OpenSearchClient(transport);
-            System.out.println("Got OpenSearchClient :" + client);
 
             final HealthResponse response = client.cluster().health();
-            System.out.println("Got HealthResponse :" + response);
             final HealthStatus status = response.status();
-            System.out.println("Got HealthStatus :" + status.jsonValue());
+            LOGGER.info("Got HealthStatus :{}", status.jsonValue());
             assertEquals("Elasticsearch status not green", HealthStatus.Green, status);
 
             // Create an index
@@ -104,21 +105,21 @@ public final class ContainerIT {
     }
 
     private OpenSearchTransport getOpenSearchTransport(final RestClient restClient) {
-        System.out.println("Creating OpenSearchTransport...");
+        LOGGER.info("Creating OpenSearchTransport...");
         final OpenSearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
         return transport;
     }
 
     private RestClient getOpenSearchRestClient() {
-        System.out.println("getOpenSearchRestClient...");
+        LOGGER.info("getOpenSearchRestClient...");
         final String userName = Optional.ofNullable(System.getProperty("user")).orElse("admin");
         final String password = Optional.ofNullable(System.getProperty("password")).orElse("admin");
 
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
         try {
-            System.out.println("Client to " + System.getenv("OPENSEARCH_SCHEME") + "://" + System.getenv("OPENSEARCH_HOST") + ":"
-                + System.getenv("OPENSEARCH_PORT"));
+            LOGGER.info("Server URL {}://{}:{}",
+                System.getenv("OPENSEARCH_SCHEME"), System.getenv("OPENSEARCH_HOST"), System.getenv("OPENSEARCH_PORT"));
 
             final HttpHost httpHost = new HttpHost(System.getenv("OPENSEARCH_HOST"), Integer.parseInt(System.getenv("OPENSEARCH_PORT")),
                 System.getenv("OPENSEARCH_SCHEME"));
@@ -146,10 +147,10 @@ public final class ContainerIT {
                 }
             });
 
-            System.out.println("Creating RestClient...");
+            LOGGER.info("Creating RestClient...");
             return builder.build();
         } catch (final Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error in getOpenSearchRestClient", e);
             fail("Unable to create OpenSearch client");
             return null;
         }
