@@ -32,7 +32,6 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.junit.Rule;
 import org.junit.Test;
@@ -138,7 +137,7 @@ public final class ContainerIT {
                     httpClientBuilder
                         .setSSLContext(SSLContextBuilder.create().loadTrustMaterial(null, (chains, authType) -> true).build());
                 } catch (final KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Error configuring http client", e);
                 }
                 return httpClientBuilder;
             }
