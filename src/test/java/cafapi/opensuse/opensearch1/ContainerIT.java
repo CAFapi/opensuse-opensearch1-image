@@ -17,7 +17,6 @@ package cafapi.opensuse.opensearch1;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -117,43 +116,37 @@ public final class ContainerIT {
 
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
-        try {
-            LOGGER.info("Server URL {}://{}:{}",
-                System.getenv("OPENSEARCH_SCHEME"), System.getenv("OPENSEARCH_HOST"), System.getenv("OPENSEARCH_PORT"));
+        LOGGER.info("Server URL {}://{}:{}",
+            System.getenv("OPENSEARCH_SCHEME"), System.getenv("OPENSEARCH_HOST"), System.getenv("OPENSEARCH_PORT"));
 
-            final HttpHost httpHost = new HttpHost(System.getenv("OPENSEARCH_HOST"), Integer.parseInt(System.getenv("OPENSEARCH_PORT")),
-                System.getenv("OPENSEARCH_SCHEME"));
+        final HttpHost httpHost = new HttpHost(System.getenv("OPENSEARCH_HOST"), Integer.parseInt(System.getenv("OPENSEARCH_PORT")),
+            System.getenv("OPENSEARCH_SCHEME"));
 
-            final RestClientBuilder builder = RestClient.builder(httpHost);
+        final RestClientBuilder builder = RestClient.builder(httpHost);
 
-            builder.setRequestConfigCallback(
-                requestConfigBuilder -> requestConfigBuilder.setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT));
+        builder.setRequestConfigCallback(
+            requestConfigBuilder -> requestConfigBuilder.setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT));
 
-            builder.setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder);
+        builder.setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder);
 
-            builder.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-                @Override
-                public HttpAsyncClientBuilder customizeHttpClient(final HttpAsyncClientBuilder httpClientBuilder) {
-                    httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE).setKeepAliveStrategy(
-                            (response, context) -> 3600000/* 1hour */);
-                    try {
-                        httpClientBuilder
-                            .setSSLContext(SSLContextBuilder.create().loadTrustMaterial(null, (chains, authType) -> true).build());
-                    } catch (final KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
-                        e.printStackTrace();
-                    }
-                    return httpClientBuilder;
+        builder.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+            @Override
+            public HttpAsyncClientBuilder customizeHttpClient(final HttpAsyncClientBuilder httpClientBuilder) {
+                httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
+                    .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE).setKeepAliveStrategy(
+                        (response, context) -> 3600000/* 1hour */);
+                try {
+                    httpClientBuilder
+                        .setSSLContext(SSLContextBuilder.create().loadTrustMaterial(null, (chains, authType) -> true).build());
+                } catch (final KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+                    e.printStackTrace();
                 }
-            });
+                return httpClientBuilder;
+            }
+        });
 
-            LOGGER.info("Creating RestClient...");
-            return builder.build();
-        } catch (final Exception e) {
-            LOGGER.error("Error in getOpenSearchRestClient", e);
-            fail("Unable to create OpenSearch client");
-            return null;
-        }
+        LOGGER.info("Creating RestClient...");
+        return builder.build();
     }
 
 }
