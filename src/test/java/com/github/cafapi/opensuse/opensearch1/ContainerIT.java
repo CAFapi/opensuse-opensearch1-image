@@ -129,9 +129,8 @@ public final class ContainerIT {
 
         builder.setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder);
 
-        builder.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-            @Override
-            public HttpAsyncClientBuilder customizeHttpClient(final HttpAsyncClientBuilder httpClientBuilder) {
+        builder.setHttpClientConfigCallback(httpClientBuilder -> {
+            {
                 httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
                     .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE).setKeepAliveStrategy(
                         (response, context) -> 3600000/* 1hour */);
