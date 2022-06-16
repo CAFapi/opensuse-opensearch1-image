@@ -1,7 +1,6 @@
 *~
 \#*
 *.swp
-**/target/*
 *.log
 
 # Eclipse
@@ -10,25 +9,4 @@
 .project
 .classpath
 bin
-
-# IntelliJ
-**/.idea/workspace.xml
-**/.idea/tasks.xml
-**/.idea/dictionaries/
-**/.idea/libraries/*.xml
-**/.idea/artifacts/*.xml
-**/.idea/copyright
-**/.idea/uiDesigner.xml
-**/.idea/dataSources.*
-**/.idea/sqldialects.xml
-**/.idea/inspectionProfiles/
-**/.idea/codeStyleSettings.xml
-**/.idea/jsLinters/
-*.iws
-*.orig
-atlassian-ide-plugin.xml
-
-# Test
-test/**/drivers/*
-test/**/reports/*
-/target/
+target/
