@@ -10,15 +10,10 @@ It can be used as a base image for any projects that use OpenSearch.
 `sysctl -w vm.max_map_count=262144`
 
 ### Start a continer with the image
-`docker run -d --name os1 -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" dev/cafapi/opensuse-opensearch1:1.0.0-SNAPSHOT`
+`docker run -d --name os1 -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" cafapi/opensuse-opensearch1`
 
 Send requests to the server to verify that OpenSearch is up and running:
 
-`curl -XGET --insecure -u 'admin:admin' https://localhost:9200`  
-`curl -XGET --insecure -u 'admin:admin' https://localhost:9200/_cat/nodes?v`  
-`curl -XGET --insecure -u 'admin:admin' https://localhost:9200/_cat/plugins?v`
-
-### Bash access to container
-To create an interactive Bash session in a container, run:
-
-`docker exec -it os1 /bin/bash`
+`curl -ku -u 'admin:admin' https://localhost:9200`  
+`curl -ku -u 'admin:admin' https://localhost:9200/_cat/nodes?v`  
+`curl -ku -u 'admin:admin' https://localhost:9200/_cat/plugins?v`
