@@ -48,6 +48,7 @@ import org.opensearch.client.opensearch._types.HealthStatus;
 import org.opensearch.client.opensearch._types.mapping.Property;
 import org.opensearch.client.opensearch.cluster.HealthRequest;
 import org.opensearch.client.opensearch.cluster.HealthResponse;
+import org.opensearch.client.opensearch.indices.Alias;
 import org.opensearch.client.opensearch.indices.CreateIndexRequest;
 import org.opensearch.client.opensearch.indices.CreateIndexResponse;
 import org.opensearch.client.opensearch.indices.IndexSettings;
@@ -103,6 +104,11 @@ public final class ContainerIT {
 
             final CreateIndexRequest.Builder indexBuilder = new CreateIndexRequest.Builder();
             indexBuilder.index(index);
+            final Alias.Builder aBuilder = new Alias.Builder();
+            aBuilder.indexRouting(index + "_latest");
+            aBuilder.searchRouting(index + "*");
+            aBuilder.isWriteIndex(true);
+            indexBuilder.aliases(index, aBuilder.build());
             indexBuilder.settings(indexSettings);
 
             final Map<String, Property> fields = Collections.singletonMap("text", Property.of(p -> p.text(f -> f.store(false))));
@@ -111,6 +117,7 @@ public final class ContainerIT {
 
             final CreateIndexRequest createIndexRequest = indexBuilder.build();
 
+            LOGGER.info("Creating index...");
             for (int i = 0; i < 3; i++) {
                 try {
                     final CreateIndexResponse createIndexResponse = client.indices().create(createIndexRequest);
