@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -70,7 +71,7 @@ public final class ContainerIT {
     };
 
     @Test
-    public void testIndexCreation() throws IOException {
+    public void testIndexCreation() throws IOException, InterruptedException {
         try (final RestClient restClient = getOpenSearchRestClient();
             final OpenSearchTransport transport = getOpenSearchTransport(restClient);) {
             final OpenSearchClient client = new OpenSearchClient(transport);
@@ -79,11 +80,19 @@ public final class ContainerIT {
             builder.expandWildcards(ExpandWildcard.All);
             builder.index("*", "-.*");
             final HealthRequest request = builder.build();
-            final HealthResponse response = client.cluster().health();
-            final HealthStatus status = response.status();
-            LOGGER.info("Got HealthStatus :{}", status.jsonValue());
-            assertEquals("Elasticsearch status not green", HealthStatus.Green, status);
+            for (int i = 0; i < 3; i++) {
+                try {
                     final HealthResponse response = client.cluster().health(request);
+                    final HealthStatus status = response.status();
+
+                    LOGGER.info("Got HealthStatus :{}", status.jsonValue());
+                    assertEquals("Elasticsearch status not green", HealthStatus.Green, status);
+                    break;
+                } catch (final ConnectException e) {
+                    Thread.sleep(5000);
+                    i++;
+                }
+            }
 
             // Create an index
             final String index = "container_test";
@@ -102,10 +111,18 @@ public final class ContainerIT {
 
             final CreateIndexRequest createIndexRequest = indexBuilder.build();
 
-            final CreateIndexResponse createIndexResponse = client.indices().create(createIndexRequest);
+            for (int i = 0; i < 3; i++) {
+                try {
+                    final CreateIndexResponse createIndexResponse = client.indices().create(createIndexRequest);
 
-            assertTrue("Index response was not acknowledged", createIndexResponse.acknowledged());
-            assertTrue("All shards were not copied", createIndexResponse.shardsAcknowledged());
+                    assertTrue("Index response was not acknowledged", createIndexResponse.acknowledged());
+                    assertTrue("All shards were not copied", createIndexResponse.shardsAcknowledged());
+                    break;
+                } catch (final ConnectException e) {
+                    Thread.sleep(5000);
+                    i++;
+                }
+            }
         }
     }
 
@@ -127,7 +144,6 @@ public final class ContainerIT {
 
         final HttpHost httpHost = new HttpHost(System.getenv("OPENSEARCH_HOST"), Integer.parseInt(System.getenv("OPENSEARCH_PORT")),
             System.getenv("OPENSEARCH_SCHEME"));
-
         final RestClientBuilder builder = RestClient.builder(httpHost);
 
         builder.setRequestConfigCallback(
