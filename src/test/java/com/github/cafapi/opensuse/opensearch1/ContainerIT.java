@@ -42,8 +42,10 @@ import org.opensearch.client.RestClient;
 import org.opensearch.client.RestClientBuilder;
 import org.opensearch.client.json.jackson.JacksonJsonpMapper;
 import org.opensearch.client.opensearch.OpenSearchClient;
+import org.opensearch.client.opensearch._types.ExpandWildcard;
 import org.opensearch.client.opensearch._types.HealthStatus;
 import org.opensearch.client.opensearch._types.mapping.Property;
+import org.opensearch.client.opensearch.cluster.HealthRequest;
 import org.opensearch.client.opensearch.cluster.HealthResponse;
 import org.opensearch.client.opensearch.indices.CreateIndexRequest;
 import org.opensearch.client.opensearch.indices.CreateIndexResponse;
@@ -73,10 +75,15 @@ public final class ContainerIT {
             final OpenSearchTransport transport = getOpenSearchTransport(restClient);) {
             final OpenSearchClient client = new OpenSearchClient(transport);
 
+            final HealthRequest.Builder builder = new HealthRequest.Builder();
+            builder.expandWildcards(ExpandWildcard.All);
+            builder.index("*", "-.*");
+            final HealthRequest request = builder.build();
             final HealthResponse response = client.cluster().health();
             final HealthStatus status = response.status();
             LOGGER.info("Got HealthStatus :{}", status.jsonValue());
             assertEquals("Elasticsearch status not green", HealthStatus.Green, status);
+                    final HealthResponse response = client.cluster().health(request);
 
             // Create an index
             final String index = "container_test";
