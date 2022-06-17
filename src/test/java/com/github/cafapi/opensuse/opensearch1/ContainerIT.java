@@ -17,6 +17,7 @@ package com.github.cafapi.opensuse.opensearch1;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -81,19 +82,24 @@ public final class ContainerIT {
             builder.expandWildcards(ExpandWildcard.All);
             builder.index("*", "-.*");
             final HealthRequest request = builder.build();
+            HealthResponse response = null;
+            LOGGER.info("Running HealthCheck...");
             for (int i = 0; i < 3; i++) {
                 try {
-                    final HealthResponse response = client.cluster().health(request);
-                    final HealthStatus status = response.status();
-
-                    LOGGER.info("Got HealthStatus :{}", status.jsonValue());
-                    assertEquals("Elasticsearch status not green", HealthStatus.Green, status);
+                    response = client.cluster().health(request);
                     break;
                 } catch (final ConnectException e) {
                     Thread.sleep(5000);
-                    i++;
+                    LOGGER.info("Retrying HealthCheck...");
                 }
             }
+            if (response == null) {
+                fail("HealthCheck failed");
+            }
+            final HealthStatus status = response.status();
+
+            LOGGER.info("Got HealthStatus :{}", status.jsonValue());
+            assertEquals("Elasticsearch status not green", HealthStatus.Green, status);
 
             // Create an index
             final String index = "container_test";
@@ -118,18 +124,21 @@ public final class ContainerIT {
             final CreateIndexRequest createIndexRequest = indexBuilder.build();
 
             LOGGER.info("Creating index...");
+            CreateIndexResponse createIndexResponse = null;
             for (int i = 0; i < 3; i++) {
                 try {
-                    final CreateIndexResponse createIndexResponse = client.indices().create(createIndexRequest);
-
-                    assertTrue("Index response was not acknowledged", createIndexResponse.acknowledged());
-                    assertTrue("All shards were not copied", createIndexResponse.shardsAcknowledged());
+                    createIndexResponse = client.indices().create(createIndexRequest);
                     break;
                 } catch (final ConnectException e) {
                     Thread.sleep(5000);
-                    i++;
+                    LOGGER.info("Retrying index creation...");
                 }
             }
+            if (createIndexResponse == null) {
+                fail("Index creation failed");
+            }
+            assertTrue("Index response was not acknowledged", createIndexResponse.acknowledged());
+            assertTrue("All shards were not copied", createIndexResponse.shardsAcknowledged());
         }
     }
 
