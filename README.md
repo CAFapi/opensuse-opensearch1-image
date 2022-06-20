@@ -14,6 +14,6 @@ It can be used as a base image for any projects that use OpenSearch.
 
 Send requests to the server to verify that OpenSearch is up and running:
 
-`curl -ku -u 'admin:admin' https://localhost:9200`  
-`curl -ku -u 'admin:admin' https://localhost:9200/_cat/nodes?v`  
-`curl -ku -u 'admin:admin' https://localhost:9200/_cat/plugins?v`
+`curl -ku 'admin:admin' https://localhost:9200`  
+`curl -ku 'admin:admin' https://localhost:9200/_cat/nodes?v`  
+`curl -ku 'admin:admin' https://localhost:9200/_cat/plugins?v`
