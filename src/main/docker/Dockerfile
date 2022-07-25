@@ -18,7 +18,7 @@
 ARG DOCKER_HUB_PUBLIC=docker.io
 
 # Reference the official OpenSearch 1 image
-FROM ${DOCKER_HUB_PUBLIC}/opensearchproject/opensearch:1.3.2 AS os1-image
+FROM ${DOCKER_HUB_PUBLIC}/opensearchproject/opensearch:1.3.4 AS os1-image
 
 RUN rm -rf /usr/share/opensearch/jdk \
            /usr/share/opensearch/lib/log4j-*
