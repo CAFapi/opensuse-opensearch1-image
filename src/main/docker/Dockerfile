@@ -31,7 +31,7 @@ FROM @DOCKER_HUB_PUBLIC@/cafapi/prereleases:opensuse-jre17-1.3.0-SNAPSHOT
 RUN zypper -n refresh && \
     zypper -n update
 
-# COPY --from=os1-image /etc/pki/ca-trust /etc/pki/ca-trust
+COPY --from=os1-image /etc/pki/ca-trust /etc/pki/ca-trust
 
 # Install packages
 RUN zypper -n install which hostname netcat-openbsd unzip wget
