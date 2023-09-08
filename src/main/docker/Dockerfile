@@ -65,6 +65,7 @@ RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
 
 COPY scripts/ /opt/opensearch/scripts/
 RUN chmod +x /opt/opensearch/scripts/*
+RUN chmod +r /etc/pki/nssdb/*
 
 # Startup opensearch and expose ports
 EXPOSE 9200 9300
