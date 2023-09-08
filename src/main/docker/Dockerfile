@@ -26,7 +26,7 @@ RUN rm -rf /usr/share/opensearch/jdk \
 #
 # The actual image definition
 #
-FROM @DOCKER_HUB_PUBLIC@/cafapi/prereleases:opensuse-jre17-1.3.0-SNAPSHOT
+FROM @DOCKER_HUB_PUBLIC@/cafapi/prereleases:opensuse-jre17-1.3.0-US756014-perm-SNAPSHOT
 
 RUN zypper -n refresh && \
     zypper -n update
@@ -65,7 +65,6 @@ RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
 
 COPY scripts/ /opt/opensearch/scripts/
 RUN chmod +x /opt/opensearch/scripts/*
-RUN chmod +r /etc/pki/nssdb/*
 
 # Startup opensearch and expose ports
 EXPOSE 9200 9300
