@@ -26,7 +26,7 @@ RUN rm -rf /usr/share/opensearch/jdk \
 #
 # The actual image definition
 #
-FROM @DOCKER_HUB_PUBLIC@/cafapi/prereleases:opensuse-jre17-1.3.0-SNAPSHOT
+FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1
 
 RUN zypper -n refresh && \
     zypper -n update
