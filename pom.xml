@@ -35,7 +35,7 @@
     <parent>
         <groupId>com.github.cafapi</groupId>
         <artifactId>caf-common-parent</artifactId>
-        <version>4.1.0-380</version>
+        <version>5.0.0-SNAPSHOT</version>
     </parent>
 
     <licenses>
@@ -71,7 +71,6 @@
         <dockerCafImagePrefix>${dockerImagePrefix}${dockerHubOrganization}${dockerOrgSeperator}</dockerCafImagePrefix>
         <dockerProjectVersion>${dockerVersionSeperator}${project.version}</dockerProjectVersion>
         <DOCKER_HUB_PUBLIC>${dockerHubPublic}</DOCKER_HUB_PUBLIC>
-        <enforceBannedDependencies>false</enforceBannedDependencies>
     </properties>
 
     <dependencyManagement>
