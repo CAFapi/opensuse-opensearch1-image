@@ -52,9 +52,22 @@ COPY --from=os1-image --chown=1000:0 /usr/share/opensearch/ /usr/share/opensearc
 COPY log4j2.properties /usr/share/opensearch/config
 COPY /maven/*.jar /usr/share/opensearch/lib/
 
+ENV JAVA_HOME=${JRE_HOME}
 # Install ICU Analysis plugin
-RUN JAVA_HOME=${JRE_HOME} OPENSEARCH_JAVA_OPTS="$(echo ${https_proxy} | sed -E 's/^.*:\/\/(.*):([0-9]*).*/-Dhttps.proxyHost=\1 -Dhttps.proxyPort=\2/')" \
+RUN OPENSEARCH_JAVA_OPTS="$(echo ${https_proxy} | sed -E 's/^.*:\/\/(.*):([0-9]*).*/-Dhttps.proxyHost=\1 -Dhttps.proxyPort=\2/')" \
     /usr/share/opensearch/bin/opensearch-plugin install analysis-icu
+
+# Remove unused plugins
+RUN /usr/share/opensearch/bin/opensearch-plugin remove opensearch-performance-analyzer --purge && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-reports-scheduler && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-cross-cluster-replication && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-alerting && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-anomaly-detection && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-ml && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-asynchronous-search && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-knn && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-sql && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-observability
 
 ENV PATH=/usr/share/opensearch/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
