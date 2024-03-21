@@ -185,12 +185,12 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <containerNamePattern>%a-%t</containerNamePattern>
+                    <containerNamePattern>%a-%t-%n</containerNamePattern>
                     <images>
                         <image>
                             <name>${dockerCafImagePrefix}opensuse-opensearch1${dockerProjectVersion}</name>
                             <build>
-                                <dockerFileDir>.</dockerFileDir>
+                                <dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile>
                                 <filter>@</filter>
                                 <args>
                                     <!-- Enable internet access -->
@@ -229,6 +229,48 @@
                                 </wait>
                             </run>
                         </image>
+                        <image>
+                            <name>${dockerCafImagePrefix}opensuse-opensearch1-noplugins${dockerProjectVersion}</name>
+                            <build>
+                                <dockerFile>${project.basedir}/src/main/docker/Dockerfile.noPlugins</dockerFile>
+                                <filter>@</filter>
+                                <args>
+                                    <!-- Enable internet access -->
+                                    <http_proxy>${env.HTTP_PROXY}</http_proxy>
+                                    <https_proxy>${env.HTTPS_PROXY}</https_proxy>
+                                    <no_proxy>${env.NO_PROXY}</no_proxy>
+                                </args>
+                                <assembly>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <outputDirectory>./</outputDirectory>
+                                                <scope>runtime</scope>
+                                                <useTransitiveDependencies>true</useTransitiveDependencies>
+                                                <useProjectArtifact>false</useProjectArtifact>
+                                            </dependencySet>
+                                        </dependencySets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                            <run>
+                                <ports>
+                                    <port>${os.http.port1}:9200</port>
+                                    <port>${os.client.port1}:9300</port>
+                                </ports>
+                                <env>
+                                    <discovery.type>single-node</discovery.type>
+                                </env>
+                                <log>
+                                    <enabled>true</enabled>
+                                </log>
+                                <wait>
+                                    <healthy>true</healthy>
+                                    <time>600000</time>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                            </run>
+                        </image>
                     </images>
                     <verbose>true</verbose>
                 </configuration>
@@ -250,20 +292,36 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>verify-Opensearch-plugin</id>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
+                        <configuration>
+                            <argLine>-Dfile.encoding=UTF-8</argLine>
+                            <environmentVariables>
+                                <OPENSEARCH_HOST>${docker.host.address}</OPENSEARCH_HOST>
+                                <OPENSEARCH_PORT>${os.http.port}</OPENSEARCH_PORT>
+                                <OPENSEARCH_SCHEME>https</OPENSEARCH_SCHEME>
+                            </environmentVariables>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>verify-Opensearch-noPlugin</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <argLine>-Dfile.encoding=UTF-8</argLine>
+                            <environmentVariables>
+                                <OPENSEARCH_HOST>${docker.host.address}</OPENSEARCH_HOST>
+                                <OPENSEARCH_PORT>${os.http.port1}</OPENSEARCH_PORT>
+                                <OPENSEARCH_SCHEME>https</OPENSEARCH_SCHEME>
+                            </environmentVariables>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <argLine>-Dfile.encoding=UTF-8</argLine>
-                    <environmentVariables>
-                        <OPENSEARCH_HOST>${docker.host.address}</OPENSEARCH_HOST>
-                        <OPENSEARCH_PORT>${os.http.port}</OPENSEARCH_PORT>
-                        <OPENSEARCH_SCHEME>https</OPENSEARCH_SCHEME>
-                    </environmentVariables>
-                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -274,6 +332,8 @@
             <properties>
                 <os.http.port>19200</os.http.port>
                 <os.client.port>19300</os.client.port>
+                <os.http.port1>19201</os.http.port1>
+                <os.client.port1>19301</os.client.port1>
             </properties>
         </profile>
     </profiles>
