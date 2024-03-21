@@ -323,6 +323,15 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <mapping>
+                        <noPlugins>SCRIPT_STYLE</noPlugins>
+                    </mapping>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
