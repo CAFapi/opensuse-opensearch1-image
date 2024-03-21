@@ -190,7 +190,7 @@
                         <image>
                             <name>${dockerCafImagePrefix}opensuse-opensearch1${dockerProjectVersion}</name>
                             <build>
-                                <dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile>
+                                <dockerFileDir>.</dockerFileDir>
                                 <filter>@</filter>
                                 <args>
                                     <!-- Enable internet access -->
@@ -250,29 +250,19 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>verify-Opensearch-plugin</id>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
-                        <configuration>
-                            <argLine>-Dfile.encoding=UTF-8</argLine>
-                            <environmentVariables>
-                                <OPENSEARCH_HOST>${docker.host.address}</OPENSEARCH_HOST>
-                                <OPENSEARCH_PORT>${os.http.port}</OPENSEARCH_PORT>
-                                <OPENSEARCH_SCHEME>https</OPENSEARCH_SCHEME>
-                            </environmentVariables>
-                        </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
                 <configuration>
-                    <mapping>
-                        <noPlugins>SCRIPT_STYLE</noPlugins>
-                    </mapping>
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <environmentVariables>
+                        <OPENSEARCH_HOST>${docker.host.address}</OPENSEARCH_HOST>
+                        <OPENSEARCH_PORT>${os.http.port}</OPENSEARCH_PORT>
+                        <OPENSEARCH_SCHEME>https</OPENSEARCH_SCHEME>
+                    </environmentVariables>
                 </configuration>
             </plugin>
         </plugins>
