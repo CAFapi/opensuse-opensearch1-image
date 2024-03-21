@@ -24,9 +24,9 @@ RUN rm -rf /usr/share/opensearch/jdk \
            /usr/share/opensearch/lib/log4j-*
 
 #
-# The actual image definition
+# Builder image to install plugins and configure opensearch
 #
-FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1
+FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1 AS builder
 
 RUN zypper -n refresh && \
     zypper -n update
@@ -65,6 +65,13 @@ RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
 
 COPY scripts/ /opt/opensearch/scripts/
 RUN chmod +x /opt/opensearch/scripts/*
+
+RUN zypper -n remove which hostname netcat-openbsd unzip wget
+
+#
+# The actual image definition
+#
+FROM builder as opensuse-opensearch1
 
 # Startup opensearch and expose ports
 EXPOSE 9200 9300
