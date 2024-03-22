@@ -44,8 +44,6 @@ FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1 AS builder
 RUN zypper -n refresh && \
     zypper -n update
 
-COPY --from=os1-image /etc/pki/ca-trust /etc/pki/ca-trust
-
 # Install packages
 RUN zypper -n install which hostname netcat-openbsd unzip wget
 RUN zypper -n clean --all
@@ -61,8 +59,6 @@ WORKDIR /usr/share/opensearch
 
 COPY --from=os1-image --chown=1000:0 /usr/share/opensearch/ /usr/share/opensearch/
 
-# Configure logging
-COPY log4j2.properties /usr/share/opensearch/config
 COPY /maven/*.jar /usr/share/opensearch/lib/
 
 # Install ICU Analysis plugin
@@ -75,9 +71,6 @@ COPY --from=os1-image --chown=1000:0 /usr/share/opensearch/opensearch-docker-ent
 RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
     chmod g=u /etc/passwd && \
     chmod 0775 /usr/share/opensearch/opensearch-docker-entrypoint.sh
-
-COPY scripts/ /opt/opensearch/scripts/
-RUN chmod +x /opt/opensearch/scripts/*
 
 RUN zypper -n remove which hostname netcat-openbsd unzip wget
 
