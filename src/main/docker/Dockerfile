@@ -84,7 +84,30 @@ RUN zypper -n remove which hostname netcat-openbsd unzip wget
 #
 # The actual image definition
 #
-FROM builder as opensuse-opensearch1
+FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1
+
+RUN zypper -n refresh && \
+    zypper -n update
+
+COPY --from=os1-image /etc/pki/ca-trust /etc/pki/ca-trust
+
+RUN mkdir -p /usr/share/opensearch
+# Create group, user and set access rights to the opensearch base dir
+RUN groupadd -g 1000 opensearch && \
+    useradd -u 1000 -g 1000 -G 0 -d /usr/share/opensearch opensearch && \
+    chmod 0775 /usr/share/opensearch && \
+    chgrp 0 /usr/share/opensearch
+
+COPY --from=builder --chown=1000:0 /usr/share/opensearch/ /usr/share/opensearch/
+
+# Configure logging
+COPY log4j2.properties /usr/share/opensearch/config
+COPY /maven/*.jar /usr/share/opensearch/lib/
+
+ENV PATH=/usr/share/opensearch/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+COPY scripts/ /opt/opensearch/scripts/
+RUN chmod +x /opt/opensearch/scripts/*
 
 # Startup opensearch and expose ports
 EXPOSE 9200 9300
