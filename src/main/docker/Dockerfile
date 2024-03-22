@@ -59,6 +59,8 @@ WORKDIR /usr/share/opensearch
 
 COPY --from=os1-image --chown=1000:0 /usr/share/opensearch/ /usr/share/opensearch/
 
+# Configure logging
+COPY log4j2.properties /usr/share/opensearch/config
 COPY /maven/*.jar /usr/share/opensearch/lib/
 
 # Install ICU Analysis plugin
@@ -80,7 +82,8 @@ RUN zypper -n remove which hostname netcat-openbsd unzip wget
 FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1
 
 RUN zypper -n refresh && \
-    zypper -n update
+    zypper -n update && \
+    zypper -n clean --all
 
 COPY --from=os1-image /etc/pki/ca-trust /etc/pki/ca-trust
 
@@ -92,10 +95,6 @@ RUN groupadd -g 1000 opensearch && \
     chgrp 0 /usr/share/opensearch
 
 COPY --from=builder --chown=1000:0 /usr/share/opensearch/ /usr/share/opensearch/
-
-# Configure logging
-COPY log4j2.properties /usr/share/opensearch/config
-COPY /maven/*.jar /usr/share/opensearch/lib/
 
 ENV PATH=/usr/share/opensearch/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
