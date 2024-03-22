@@ -74,8 +74,6 @@ RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
     chmod g=u /etc/passwd && \
     chmod 0775 /usr/share/opensearch/opensearch-docker-entrypoint.sh
 
-RUN zypper -n remove which hostname netcat-openbsd unzip wget
-
 #
 # The actual image definition
 #
