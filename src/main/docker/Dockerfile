@@ -20,6 +20,19 @@ ARG DOCKER_HUB_PUBLIC=docker.io
 # Reference the official OpenSearch 1 image
 FROM @DOCKER_HUB_PUBLIC@/opensearchproject/opensearch:1.3.15 AS os1-image
 
+# Remove unused plugins
+RUN /usr/share/opensearch/bin/opensearch-plugin remove opensearch-performance-analyzer --purge && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-reports-scheduler --purge && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-cross-cluster-replication && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-alerting && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-anomaly-detection && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-ml && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-asynchronous-search && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-knn && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-sql && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-observability --purge
+
+
 RUN rm -rf /usr/share/opensearch/jdk \
            /usr/share/opensearch/lib/log4j-*
 
