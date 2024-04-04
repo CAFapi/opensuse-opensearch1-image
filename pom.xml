@@ -100,14 +100,14 @@
                     <artifactId>jackson-core</artifactId>
                 </exclusion>
                 <!-- version clashes with analysis-icu plugin -->
-                <exclusion>
+                <!--<exclusion>
                     <groupId>org.apache.commons</groupId>
                     <artifactId>commons-lang3</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.apache.commons</groupId>
                     <artifactId>commons-text</artifactId>
-                </exclusion>
+                </exclusion>-->
             </exclusions>
         </dependency>
         <dependency>
