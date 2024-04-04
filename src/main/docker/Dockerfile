@@ -34,7 +34,8 @@ RUN /usr/share/opensearch/bin/opensearch-plugin remove opensearch-performance-an
 
 
 RUN rm -rf /usr/share/opensearch/jdk \
-           /usr/share/opensearch/lib/log4j-*
+           /usr/share/opensearch/lib/log4j-* \
+           /usr/share/opensearch/performance-analyzer-rca
 
 #
 # Builder image to install plugins and configure opensearch
