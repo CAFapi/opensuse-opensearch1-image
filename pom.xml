@@ -79,12 +79,12 @@
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>
-                <version>2.16.0</version>
+                <version>2.23.1</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-core</artifactId>
-                <version>2.16.0</version>
+                <version>2.23.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -261,7 +261,7 @@
                     <environmentVariables>
                         <OPENSEARCH_HOST>${docker.host.address}</OPENSEARCH_HOST>
                         <OPENSEARCH_PORT>${os.http.port}</OPENSEARCH_PORT>
-                        <OPENSEARCH_SCHEME>https</OPENSEARCH_SCHEME>
+                        <OPENSEARCH_SCHEME>http</OPENSEARCH_SCHEME>
                     </environmentVariables>
                 </configuration>
             </plugin>

@@ -30,11 +30,13 @@ RUN /usr/share/opensearch/bin/opensearch-plugin remove opensearch-performance-an
     /usr/share/opensearch/bin/opensearch-plugin remove opensearch-asynchronous-search && \
     /usr/share/opensearch/bin/opensearch-plugin remove opensearch-knn && \
     /usr/share/opensearch/bin/opensearch-plugin remove opensearch-sql && \
-    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-observability --purge
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-observability --purge && \
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-security
 
 
 RUN rm -rf /usr/share/opensearch/jdk \
-           /usr/share/opensearch/lib/log4j-*
+           /usr/share/opensearch/lib/log4j-* \
+           /usr/share/opensearch/performance-analyzer-rca
 
 #
 # Builder image to install plugins and configure opensearch
@@ -102,6 +104,6 @@ RUN chmod +x /opt/opensearch/scripts/*
 # Startup opensearch and expose ports
 EXPOSE 9200 9300
 
-HEALTHCHECK --interval=1m --start-period=5m CMD curl -k -u "admin:admin" https://0.0.0.0:9200 || exit 1
+HEALTHCHECK --interval=1m --start-period=5m CMD curl -k http://0.0.0.0:9200 || exit 1
 
 CMD /opt/opensearch/scripts/start.sh
