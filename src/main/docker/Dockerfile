@@ -36,7 +36,11 @@ RUN /usr/share/opensearch/bin/opensearch-plugin remove opensearch-performance-an
 
 RUN rm -rf /usr/share/opensearch/jdk \
            /usr/share/opensearch/lib/log4j-* \
-           /usr/share/opensearch/performance-analyzer-rca
+           /usr/share/opensearch/performance-analyzer-rca \
+           /usr/share/opensearch/lib/jackson-* \
+           /usr/share/opensearch/lib/tools/upgrade-cli/jackson-* \
+           /usr/share/opensearch/modules/ingest-geoip/jackson-* \
+           /usr/share/opensearch/modules/transport-netty4/netty-*
 
 #
 # Builder image to install plugins and configure opensearch
@@ -63,7 +67,23 @@ COPY --from=os1-image --chown=1000:0 /usr/share/opensearch/ /usr/share/opensearc
 
 # Configure logging
 COPY log4j2.properties /usr/share/opensearch/config
-COPY /maven/*.jar /usr/share/opensearch/lib/
+COPY /maven/log4j-*.jar /usr/share/opensearch/lib/
+COPY /maven/caf-logging-*.jar /usr/share/opensearch/lib/
+COPY /maven/util-process-identifier-*.jar /usr/share/opensearch/lib/
+
+# Copy updated jackson jars
+COPY /maven/jackson-core-*.jar /usr/share/opensearch/lib/
+COPY /maven/jackson-dataformat-cbor-*.jar /usr/share/opensearch/lib/
+COPY /maven/jackson-dataformat-smile-*.jar /usr/share/opensearch/lib/
+COPY /maven/jackson-dataformat-yaml-*.jar /usr/share/opensearch/lib/
+COPY /maven/jackson-annotations-*.jar /usr/share/opensearch/lib/tools/upgrade-cli/
+COPY /maven/jackson-core-*.jar /usr/share/opensearch/lib/tools/upgrade-cli/
+COPY /maven/jackson-databind-*.jar /usr/share/opensearch/lib/tools/upgrade-cli/
+COPY /maven/jackson-annotations-*.jar /usr/share/opensearch/modules/ingest-geoip/
+COPY /maven/jackson-databind-*.jar /usr/share/opensearch/modules/ingest-geoip/
+
+# Copy updated netty jars
+COPY /maven/netty-*.jar /usr/share/opensearch/modules/transport-netty4/
 
 # Install ICU Analysis plugin
 RUN JAVA_HOME=${JRE_HOME} OPENSEARCH_JAVA_OPTS="$(echo ${https_proxy} | sed -E 's/^.*:\/\/(.*):([0-9]*).*/-Dhttps.proxyHost=\1 -Dhttps.proxyPort=\2/')" \
