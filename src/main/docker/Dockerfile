@@ -68,6 +68,8 @@ COPY --from=os1-image --chown=1000:0 /usr/share/opensearch/ /usr/share/opensearc
 # Configure logging
 COPY log4j2.properties /usr/share/opensearch/config
 COPY /maven/log4j-*.jar /usr/share/opensearch/lib/
+COPY /maven/caf-logging-*.jar /usr/share/opensearch/lib/
+COPY /maven/util-process-identifier-*.jar /usr/share/opensearch/lib/
 
 # Copy updated jackson jars
 COPY /maven/jackson-core-*.jar /usr/share/opensearch/lib/
