@@ -45,10 +45,12 @@ RUN rm -rf /usr/share/opensearch/jdk \
 #
 # Builder image to install plugins and configure opensearch
 #
-FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1 AS builder
+FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1
 
 RUN zypper -n refresh && \
     zypper -n update
+
+COPY --from=os1-image /etc/pki/ca-trust /etc/pki/ca-trust
 
 # Install packages
 RUN zypper -n install which hostname netcat-openbsd unzip wget
@@ -95,28 +97,6 @@ COPY --from=os1-image --chown=1000:0 /usr/share/opensearch/opensearch-docker-ent
 RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
     chmod g=u /etc/passwd && \
     chmod 0775 /usr/share/opensearch/opensearch-docker-entrypoint.sh
-
-#
-# The actual image definition
-#
-FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1
-
-RUN zypper -n refresh && \
-    zypper -n update && \
-    zypper -n clean --all
-
-COPY --from=os1-image /etc/pki/ca-trust /etc/pki/ca-trust
-
-RUN mkdir -p /usr/share/opensearch
-# Create group, user and set access rights to the opensearch base dir
-RUN groupadd -g 1000 opensearch && \
-    useradd -u 1000 -g 1000 -G 0 -d /usr/share/opensearch opensearch && \
-    chmod 0775 /usr/share/opensearch && \
-    chgrp 0 /usr/share/opensearch
-
-COPY --from=builder --chown=1000:0 /usr/share/opensearch/ /usr/share/opensearch/
-
-ENV PATH=/usr/share/opensearch/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 COPY scripts/ /opt/opensearch/scripts/
 RUN chmod +x /opt/opensearch/scripts/*
