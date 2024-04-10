@@ -18,7 +18,7 @@
 ARG DOCKER_HUB_PUBLIC=docker.io
 
 # Reference the official OpenSearch 1 image
-FROM @DOCKER_HUB_PUBLIC@/opensearchproject/opensearch:1.3.15 AS os1-image
+FROM @DOCKER_HUB_PUBLIC@/opensearchproject/opensearch:1.3.14 AS os1-image
 
 # Remove unused plugins
 RUN /usr/share/opensearch/bin/opensearch-plugin remove opensearch-performance-analyzer --purge && \
