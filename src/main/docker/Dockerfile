@@ -30,8 +30,7 @@ RUN /usr/share/opensearch/bin/opensearch-plugin remove opensearch-performance-an
     /usr/share/opensearch/bin/opensearch-plugin remove opensearch-asynchronous-search && \
     /usr/share/opensearch/bin/opensearch-plugin remove opensearch-knn && \
     /usr/share/opensearch/bin/opensearch-plugin remove opensearch-sql && \
-    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-observability --purge && \
-    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-security
+    /usr/share/opensearch/bin/opensearch-plugin remove opensearch-observability --purge
 
 
 RUN rm -rf /usr/share/opensearch/jdk \
