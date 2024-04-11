@@ -47,8 +47,7 @@ RUN rm -rf /usr/share/opensearch/jdk \
 #
 FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1 AS builder
 
-RUN zypper -n refresh && \
-    zypper -n update
+RUN zypper -n refresh
 
 # Install packages
 RUN zypper -n install which hostname netcat-openbsd unzip wget
@@ -102,7 +101,6 @@ RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
 FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1
 
 RUN zypper -n refresh && \
-    zypper -n update && \
     zypper -n clean --all
 
 COPY --from=os1-image /etc/pki/ca-trust /etc/pki/ca-trust
