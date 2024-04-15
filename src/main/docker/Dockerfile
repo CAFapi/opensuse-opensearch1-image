@@ -45,7 +45,7 @@ RUN rm -rf /usr/share/opensearch/jdk \
 #
 # Builder image to install plugins and configure opensearch
 #
-FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1 AS builder
+FROM @DOCKER_HUB_PUBLIC@/cafapi/prereleases:opensuse-jre17-1.5.1-I907068-perms-SNAPSHOT-1 AS builder
 
 RUN zypper -n refresh && \
     zypper -n update
