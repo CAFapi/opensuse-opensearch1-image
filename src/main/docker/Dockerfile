@@ -99,7 +99,7 @@ RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
 #
 # The actual image definition
 #
-FROM @DOCKER_HUB_PUBLIC@/cafapi/prereleases:opensuse-jre17-1.5.1-I907068-perms-SNAPSHOT
+FROM @DOCKER_HUB_PUBLIC@/cafapi/prereleases:opensuse-jre17-1.5.1-SNAPSHOT
 
 RUN zypper -n refresh && \
     zypper -n update && \
