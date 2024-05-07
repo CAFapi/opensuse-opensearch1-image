@@ -14,11 +14,8 @@
 # limitations under the License.
 #
 
-# Docker registry
-ARG DOCKER_HUB_PUBLIC=docker.io
-
 # Reference the official OpenSearch 1 image
-FROM @DOCKER_HUB_PUBLIC@/opensearchproject/opensearch:1.3.15 AS os1-image
+FROM ${projectDockerRegistry}/opensearchproject/opensearch AS os1-image
 
 # Remove unused plugins
 RUN /usr/share/opensearch/bin/opensearch-plugin remove opensearch-performance-analyzer --purge && \
@@ -45,7 +42,7 @@ RUN rm -rf /usr/share/opensearch/jdk \
 #
 # Builder image to install plugins and configure opensearch
 #
-FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1 AS builder
+FROM ${projectDockerRegistry}/cafapi/opensuse-jre17 AS builder
 
 RUN zypper -n refresh && \
     zypper -n update
@@ -99,7 +96,7 @@ RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
 #
 # The actual image definition
 #
-FROM @DOCKER_HUB_PUBLIC@/cafapi/opensuse-jre17:1
+FROM ${projectDockerRegistry}/cafapi/opensuse-jre17
 
 RUN zypper -n refresh && \
     zypper -n update && \
