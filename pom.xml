@@ -279,6 +279,25 @@
         </pluginManagement>
         <plugins>
             <plugin>
+                <groupId>com.github.cafapi.plugins.docker.versions</groupId>
+                <artifactId>docker-versions-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <imageManagement>
+                        <image>
+                            <repository>${dockerHubPublic}/cafapi/opensuse-jre17</repository>
+                            <tag>1.5.1</tag>
+                            <digest>sha256:b046524c5ea1f67a28ce8f91eb513f319c113a9b2ac6a7152ae4789c7e822f6c</digest>
+                        </image>
+                        <image>
+                            <repository>${DOCKER_HUB_PUBLIC}/opensearchproject/opensearch</repository>
+                            <tag>1.3.15</tag>
+                            <digest>sha256:9808108cdc2d6660077a6359d52020e4a7bb03b274817d6f8db7e7fdff625c05</digest>
+                        </image>
+                    </imageManagement>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.34.0</version>
