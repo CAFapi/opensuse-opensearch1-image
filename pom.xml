@@ -70,7 +70,6 @@
         <dockerHubOrganization>cafapi</dockerHubOrganization>
         <dockerCafImagePrefix>${dockerImagePrefix}${dockerHubOrganization}${dockerOrgSeperator}</dockerCafImagePrefix>
         <dockerProjectVersion>${dockerVersionSeperator}${project.version}</dockerProjectVersion>
-        <DOCKER_HUB_PUBLIC>${dockerHubPublic}</DOCKER_HUB_PUBLIC>
         <enforceBannedDependencies>false</enforceBannedDependencies>
         <projectDockerRegistry>opensuse-opensearch1-image-${project.version}.project-registries.local</projectDockerRegistry>
     </properties>
