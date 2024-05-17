@@ -15,7 +15,7 @@
 #
 
 # Reference the official OpenSearch 1 image
-FROM ${projectDockerRegistry}/opensearchproject/opensearch AS os1-image
+FROM @projectDockerRegistry@/opensearchproject/opensearch AS os1-image
 
 # Remove unused plugins
 RUN /usr/share/opensearch/bin/opensearch-plugin remove opensearch-performance-analyzer --purge && \
@@ -42,7 +42,7 @@ RUN rm -rf /usr/share/opensearch/jdk \
 #
 # Builder image to install plugins and configure opensearch
 #
-FROM ${projectDockerRegistry}/cafapi/opensuse-jre17 AS builder
+FROM @@/cafapi/opensuse-jre17 AS builder
 
 RUN zypper -n refresh && \
     zypper -n update
@@ -96,7 +96,7 @@ RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
 #
 # The actual image definition
 #
-FROM ${projectDockerRegistry}/cafapi/opensuse-jre17
+FROM @@/cafapi/opensuse-jre17
 
 RUN zypper -n refresh && \
     zypper -n update && \
