@@ -1,5 +1,3 @@
-!not-ready-for-release!
-
 #### Version Number
 ${version-number}
 
@@ -10,3 +8,4 @@ ${version-number}
 - I914428: Remove commons-text from dependency exclusion
 
 #### Known Issues
+- None
