@@ -169,6 +169,7 @@
                         <image>
                             <repository>${dockerHubPublic}/opensearchproject/opensearch</repository>
                             <tag>1.3.16</tag>
+                            <digest>sha256:a0a5876aab97a0137e9fe21f8856e6a6b93c873bb97e13b6a960c0b20e33a711</digest>
                         </image>
                     </imageManagement>
                 </configuration>
