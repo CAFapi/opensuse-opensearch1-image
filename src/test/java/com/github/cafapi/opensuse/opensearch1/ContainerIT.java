@@ -15,9 +15,6 @@
  */
 package com.github.cafapi.opensuse.opensearch1;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -33,11 +30,12 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestWatcher;
 import org.opensearch.client.RestClient;
 import org.opensearch.client.RestClientBuilder;
 import org.opensearch.client.json.jackson.JacksonJsonpMapper;
@@ -61,15 +59,9 @@ public final class ContainerIT {
     private static final int SOCKET_TIMEOUT = 60000;
     private static final Logger LOGGER = LoggerFactory.getLogger(ContainerIT.class);
 
-    @Rule
-    public TestRule watcher = new TestWatcher() {
-        @Override
-        protected void starting(final Description description) {
-            LOGGER.info("Running test: {}", description.getMethodName());
-        }
-    };
 
     @Test
+    @ExtendWith(TestWatcherExtension.class)
     public void testIndexCreation() throws IOException, InterruptedException {
         try (final RestClient restClient = getOpenSearchRestClient();
             final OpenSearchTransport transport = getOpenSearchTransport(restClient);) {
@@ -85,7 +77,7 @@ public final class ContainerIT {
             final HealthStatus status = response.status();
 
             LOGGER.info("Got HealthStatus :{}", status.jsonValue());
-            assertEquals("Elasticsearch status not green", HealthStatus.Green, status);
+            assertEquals(HealthStatus.Green, status, "Elasticsearch status not green");
 
             // Create an index
             final String index = "container_test";
@@ -107,8 +99,8 @@ public final class ContainerIT {
             LOGGER.info("Creating index...");
             final CreateIndexResponse createIndexResponse = client.indices().create(createIndexRequest);
 
-            assertTrue("Index response was not acknowledged", createIndexResponse.acknowledged());
-            assertTrue("All shards were not copied", createIndexResponse.shardsAcknowledged());
+            assertEquals(Boolean.TRUE, createIndexResponse.acknowledged(), "Index response was not acknowledged");
+            assertTrue(createIndexResponse.shardsAcknowledged(), "All shards were not copied");
         }
     }
 
@@ -156,4 +148,15 @@ public final class ContainerIT {
         return builder.build();
     }
 
+    static class TestWatcherExtension implements TestWatcher {
+        @Override
+        public void testFailed(ExtensionContext extensionContext, Throwable throwable) {
+            LOGGER.info("Test failed: {}", extensionContext.getDisplayName());
+        }
+
+        @Override
+        public void testSuccessful(ExtensionContext extensionContext) {
+            LOGGER.info("Test passed: {}", extensionContext.getDisplayName());
+        }
+    }
 }
