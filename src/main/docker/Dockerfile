@@ -38,7 +38,7 @@ RUN rm -rf /usr/share/opensearch/jdk \
 #
 # Builder image to install plugins and configure opensearch
 #
-FROM @projectDockerRegistry@/cafapi/opensuse-jre17 AS builder
+FROM @projectDockerRegistry@/cafapi/opensuse-jre21 AS builder
 
 RUN zypper -n refresh && \
     zypper -n update
@@ -76,7 +76,7 @@ RUN chgrp 0 /usr/share/opensearch/opensearch-docker-entrypoint.sh && \
 #
 # The actual image definition
 #
-FROM @projectDockerRegistry@/cafapi/opensuse-jre17
+FROM @projectDockerRegistry@/cafapi/opensuse-jre21
 
 RUN zypper -n refresh && \
     zypper -n update && \
