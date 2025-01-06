@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2022-2024 Open Text.
+    Copyright 2022-2025 Open Text.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
 
     <groupId>com.github.cafapi</groupId>
     <artifactId>opensuse-opensearch1-image</artifactId>
-    <version>3.4.0-SNAPSHOT</version>
+    <version>3.3.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>openSUSE OpenSearch1 image</name>
@@ -64,7 +64,7 @@
     </developers>
 
     <properties>
-        <copyrightYear>2024</copyrightYear>
+        <copyrightYear>2025</copyrightYear>
         <maven.install.skip>true</maven.install.skip>
         <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
         <dockerHubOrganization>cafapi</dockerHubOrganization>
@@ -169,8 +169,8 @@
                     <imageManagement>
                         <image>
                             <repository>${dockerHubPublic}/cafapi/opensuse-jre21</repository>
-                            <tag>4.2.2</tag>
-                            <digest>sha256:5ca5ca6c3d3360ff7d12e2d45320ba83d8dae3587e85ee367ee93834c14ddd05</digest>
+                            <tag>4.2.3</tag>
+                            <digest>sha256:94d2f1315af973246a4f1a50723afecbf58856204544faed71360e50f42cab67</digest>
                         </image>
                         <image>
                             <repository>${dockerHubPublic}/opensearchproject/opensearch</repository>
