@@ -23,7 +23,7 @@
 
     <groupId>com.github.cafapi</groupId>
     <artifactId>opensuse-opensearch1-image</artifactId>
-    <version>3.4.0-SNAPSHOT</version>
+    <version>3.3.6-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>openSUSE OpenSearch1 image</name>
@@ -169,13 +169,12 @@
                     <imageManagement>
                         <image>
                             <repository>${dockerHubPublic}/cafapi/opensuse-jre21</repository>
-                            <tag>4.2.3</tag>
-                            <digest>sha256:94d2f1315af973246a4f1a50723afecbf58856204544faed71360e50f42cab67</digest>
+                            <tag>4.2.4</tag>
+                            <digest>sha256:a18b7a0a7c1297fa416c028d0156e971c1818a0f1ad8e1c90cf1b7fa2277b5c5</digest>
                         </image>
                         <image>
                             <repository>${dockerHubPublic}/opensearchproject/opensearch</repository>
                             <tag>1.3.16</tag>
-                            <digest>sha256:a0a5876aab97a0137e9fe21f8856e6a6b93c873bb97e13b6a960c0b20e33a711</digest>
                         </image>
                     </imageManagement>
                 </configuration>
