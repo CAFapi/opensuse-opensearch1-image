@@ -169,8 +169,8 @@
                     <imageManagement>
                         <image>
                             <repository>${dockerHubPublic}/cafapi/opensuse-jre21</repository>
-                            <tag>4.2.4</tag>
-                            <digest>sha256:a18b7a0a7c1297fa416c028d0156e971c1818a0f1ad8e1c90cf1b7fa2277b5c5</digest>
+                            <tag>4.2.5</tag>
+                            <digest>sha256:d4ef63665dc923f25173d055de36e6e1222f35f70367832533a9dfeaf1af98f0</digest>
                         </image>
                         <image>
                             <repository>${dockerHubPublic}/opensearchproject/opensearch</repository>
