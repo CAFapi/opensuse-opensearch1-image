@@ -170,7 +170,7 @@
                         <image>
                             <targetRepository>cafapi/opensuse-jre21</targetRepository>
                             <repository>${dockerHubPublic}/cafapi/prereleases</repository>
-                            <tag>opensuse-jre21-7.0.0-US1049088-SNAPSHOT</tag>
+                            <tag>opensuse-jre21-7.0.0-SNAPSHOT</tag>
                         </image>
                         <image>
                             <repository>${dockerHubPublic}/opensearchproject/opensearch</repository>
