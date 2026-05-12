@@ -174,7 +174,7 @@
                         </image>
                         <image>
                             <repository>${dockerHubPublic}/opensearchproject/opensearch</repository>
-                            <tag>1.3.16</tag>
+                            <tag>1.3.20</tag>
                         </image>
                     </imageManagement>
                 </configuration>
